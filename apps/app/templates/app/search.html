@@ -1,0 +1,22 @@
+{% extends "app/base.html"%}
+
+{% block content %}
+{% if place %}
+<div class="yui-gd">
+  <div class="yui-u first">
+    <h2>Place info</h2>
+    <ul id="placeinfo">
+      <li>{{place.name}}</li>
+    </ul>
+  </div>
+  <div class="yui-u">
+  </div>
+</div>
+{% endif %}
+
+<ul>
+{% for l in locations %}
+  <li><a href="{% url woeid l.woeid %}">{{l.name}} ({{l.admin1}}, {{l.country}})</a></li>
+{% endfor%}
+</ul>
+{% endblock %}

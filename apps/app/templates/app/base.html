@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
+  <title>GeoPlanet Explorer</title>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
+  <link rel="stylesheet" href="{{MEDIA_URL}}styles.css" type="text/css">
+</head>
+<body onload="initialize()">
+
+<div id="doc" class="yui-t7">
+  <div id="hd" role="banner">
+    <h1><span>GeoPlanet</span> Explorer</h1>
+  </div>
+  <div id="bd" role="main">
+    
+    <form id="f" action="{%url search_form %}" method="post">
+      <div>
+        <label for="start">Find a location:</label>
+        <input type="text" id="query" name="query">
+        <input type="submit" value="find">
+      </div>
+    </form>
+    <div id="results">
+
+      <div id="info">
+        {% block content %}
+          <p>Welcome to the GeoPlanet Explorer. 
+            Here you can explore the geographical information provided by Yahoo in the <a href="http://developer.yahoo.com/geo/geoplanet/">GeoPlanet API and data set</a>.</p>
+          <p>Simply enter a location in the form above and submit it to get detailed information about the place you are looking for - including its ancestors, siblings, children and other relationships.</p>
+        <?php }?>
+
+        <?php if(isset($_GET['woeid'])){?>
+          <p>Here's the information about the location you requested. Click any of the links to reload this page to learn more about this location.</p>
+          <p id="latlong">Clicking any of the links with a lat/lon pair will take you to Yahoo maps.</p>
+          {% endblock %}
+      </div>
+
+    </div>
+    </div>
+  <div id="ft" role="contentinfo"><p>Written by <a href="http://www.mpuig.com">Marc Puig</a>. Original version in PHP written by <a href="http://wait-till-i.com">Chris Heilmann</a>. Download the source code of this <a href="http://github.com/mpuig/django-geoplanet-explorer">on GitHub</a></p></div>
+</div>
+</body>
+</html>

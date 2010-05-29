@@ -1,0 +1,2 @@
+This is a port of the GeoPlanet Explorer (http://github.com/codepo8/geoplanet-explorer) from PHP to Django.
+On this version, it uses Google Maps and also prints the bounding box around the current area.

@@ -1,0 +1,86 @@
+{% extends "app/base.html"%}
+{% load render %}
+
+{% block content %}
+
+<div class="yui-gd">
+  <div class="yui-u first">
+    <h2>Place info</h2>
+    <ul id="placeinfo">
+      <li>{{place.name}}</li>
+    </ul>
+  </div>
+  <div class="yui-u" style="height:400px;">
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </div>
+</div>
+
+
+<div class="yui-gb">
+  <div class="yui-u first">
+    <h3>Parent:</h3>
+    {% render_list parent %}
+  </div>
+  <div class="yui-u">
+    <h3>Ancestors:</h3>
+    {% render_list ancestors %}
+  </div>
+  <div class="yui-u">
+    <h3>Belongs to:</h3>
+    {% render_list belongtos %}
+    <a href="{% url woeid_collection place.woeid 'belongtos' %}">view all</a>
+  </div>
+</div>
+<div class="yui-gb">
+  <div class="yui-u first">
+    <h3>Children:</h3>
+    {% render_list children %}
+    <a href="{% url woeid_collection place.woeid 'children' %}">view all</a>
+  </div>
+  <div class="yui-u">
+    <h3>Neighbours:</h3>
+    {% render_list neighbours %}
+    <a href="{% url woeid_collection place.woeid 'neighbours' %}">view all</a>
+  </div>
+  <div class="yui-u">
+    <h3>Siblings:</h3>
+    {% render_list siblings %}
+    <a href="{% url woeid_collection place.woeid 'siblings' %}">view all</a>
+  </div>
+</div>
+<script type="text/javascript" src="{{MEDIA_URL}}jquery.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+  function initialize() {
+    var latlng = new google.maps.LatLng({{place.lat}}, {{place.lon}});
+    var myOptions = {
+      zoom: 2,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    var marker = new google.maps.Marker({
+          position: latlng, 
+          map: map, 
+          title:"{{place.name}}"
+      });
+    var boxCoords = [
+        new google.maps.LatLng({{place.nelat}}, {{place.nelon}}),
+        new google.maps.LatLng({{place.swlat}}, {{place.nelon}}),
+        new google.maps.LatLng({{place.swlat}}, {{place.swlon}}),
+        new google.maps.LatLng({{place.nelat}}, {{place.swlon}})
+      ];
+    var bbox = new google.maps.Polygon({
+          paths: boxCoords,
+          strokeColor: "#FF0000",
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: "#FF0000",
+          fillOpacity: 0.35
+        });
+    bbox.setMap(map);
+    $('ul.collapse ul').toggle();
+  }
+</script>
+
+{% endblock %}

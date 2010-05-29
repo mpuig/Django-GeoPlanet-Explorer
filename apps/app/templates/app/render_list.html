@@ -1,0 +1,27 @@
+<ul class="collapse">
+  {% for place in places %}
+  <li>
+    <a href="{% url woeid place.woeid %}">{{place.name}}</a> <span>({{place.type}})</span>:
+    {% if place.country or place.admin1 or place.admin2 or place.admin3 %}
+    <ul>
+      {% if place.country %}<li>Country: {{place.country}}</li>{% endif %}
+      {% if place.admin1 or place.admin2 or place.admin3 %}
+      <li>Administrative
+        <ul>
+          {% if place.admin1 %}<li>{{place.admin1}} ({{place.admin1type}})</li>{% endif%}
+          {% if place.admin2 %}<li>{{place.admin2}} ({{place.admin2type}})</li>{% endif%}
+          {% if place.admin3 %}<li>{{place.admin3}} ({{place.admin3type}})</li>{% endif%}
+        </ul>
+      </li>
+      {% endif%}
+      <!--
+      <li>Location (lat/lon): {{place.lat}}, {{place.lon}}</li>
+      <li>Bounding Box: 
+        <p>NE {{place.nelat}}, {{place.nelon}}</p>
+        <p>SW {{place.swlat}}, {{place.swlon}}</p></li>
+        -->
+    </ul>
+    {% endif%}
+  </li>
+  {% endfor %}
+</ul>
