@@ -104,7 +104,7 @@ def getlocation(place_name):
 
 def getdetails(woeid):
     # Burn, YQL, burn! (I cannot believe that this works :))
-    yql= 'select * from query.multi where queries = "'+\
+    yql= 'select * from yql.query.multi where queries = "'+\
         'select * from geo.places where woeid = ' + woeid + ';' +\
         'select * from geo.places.ancestors where descendant_woeid = ' + woeid + ';' +\
         'select * from geo.places.belongtos where member_woeid = ' + woeid + ';' +\
@@ -112,8 +112,13 @@ def getdetails(woeid):
         'select * from geo.places.neighbors where neighbor_woeid = ' + woeid + ';' +\
         'select * from geo.places.parent where child_woeid = ' + woeid + ';' +\
         'select * from geo.places.siblings where sibling_woeid = ' + woeid + '"'
-    params = urllib.urlencode({'q': yql, 'env':'store://datatables.org/alltableswithkeys'})
-    f = urllib.urlopen('http://query.yahooapis.com/v1/public/yql?%s' % params)
+    params = urllib.urlencode({
+        'format': 'xml',
+        'q': yql, 
+        'env':'store://datatables.org/alltableswithkeys'
+        })
+    url = 'http://query.yahooapis.com/v1/public/yql?%s' % params
+    f = urllib.urlopen(url)
     dom = minidom.parse(f)
     results = dom.getElementsByTagName('results')
     place = create_woeid(results[0].childNodes[0].childNodes[0])
